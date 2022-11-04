@@ -1,28 +1,38 @@
 <?php
 
-$mysqli = new mysqli("127.0.0.1", "rl242", "31#Nigi2", "LoginSystem");
+$mysqli = new mysqli("127.0.0.1", "**", "****", "LoginSystem");
  
 // Check connection
-if($link === false){
+if($mysqli === false){
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
 $username = $password = $confirm_password = "";
 $username_err = $password_err = $confirm_password_err = "";
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if($_SERVER["REQUEST_METHOD"] == "POST"){ // Not veryfing if user already exist
+
+    // Getting post request data from form
 
     $pwd = $_POST["pwd"];
     $pwd_c = $_POST["pwd-c"];
     $id = $_POST["id"];
+
+    // splitting pwd to pre-check SQL Injection
+
     $pwdSplitted = explode(" ", $pwd);
+
+    // Prepare SQL Statement
     $stmt = $mysqli->prepare("INSERT INTO LoginSystem.Users (ID, PWD) VALUES (?, ?)");
+
+    // Main check of splitted password    
     if(count($pwdSplitted) > 1){
         echo 'Space Detected. Password Denied in case of SQL Injection';
-        $link->close();
+        $mysqli->close();
     }
-    else{
-        $stmt->bind_param("ss", $id, $pwd);
+    else{ // Else if password doesn't contain spaces execute
+        $hashpwd = password_hash($pwd, PASSWORD_DEFAULT); // Hash pwd
+        $stmt->bind_param("ss", $id, $hashpwd);
         $stmt->execute();
     }
 
