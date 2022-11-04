@@ -1,3 +1,5 @@
+CREATE DATABASE LoginSystem;
+
 USE LoginSystem;
 
 CREATE TABLE Users (
