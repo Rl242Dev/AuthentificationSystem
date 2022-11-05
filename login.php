@@ -1,6 +1,6 @@
 <?php
 
-$mysqli = new mysqli("127.0.0.1", "rl242", "31#Nigi2", "LoginSystem");
+$mysqli = new mysqli("127.0.0.1", "*", "*", "LoginSystem");
  
 // Check connection
 if($mysqli === false){
