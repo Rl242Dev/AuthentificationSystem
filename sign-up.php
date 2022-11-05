@@ -31,9 +31,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){ // Not veryfing if user already exist
         $mysqli->close();
     }
     else{ // Else if password doesn't contain spaces execute
-        $hashpwd = password_hash($pwd, PASSWORD_DEFAULT); // Hash pwd
-        $stmt->bind_param("ss", $id, $hashpwd);
-        $stmt->execute();
+        if($pwd == $pwd_c){
+            $hashpwd = password_hash($pwd, PASSWORD_DEFAULT); // Hash pwd
+            $stmt->bind_param("ss", $id, $hashpwd);
+            $stmt->execute();
+        }else{
+         echo 'Passwords Dont Match';
+        }
     }
 
 }
